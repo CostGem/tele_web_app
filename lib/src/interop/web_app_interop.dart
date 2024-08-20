@@ -31,6 +31,7 @@ abstract class WebAppJsImpl {
   external num get viewportHeight;
   external num get viewportStableHeight;
   external bool get isClosingConfirmationEnabled;
+  external bool get isVerticalSwipesEnabled;
   external MainButtonJsImpl get MainButton;
   external BackButtonJsImpl get BackButton;
   external void onEvent(String eventType, void Function() eventHandler);
@@ -151,6 +152,13 @@ abstract class ThemeParamsJsImpl {
     String? button_color,
     String? button_text_color,
     String? secondary_bg_color,
+    String? header_bg_color,
+    String? accent_text_color,
+    String? section_bg_color,
+    String? section_header_text_color,
+    String? section_separator_color,
+    String? subtitle_text_color,
+    String? destructive_text_color,
   });
 
   external String? get bg_color;
@@ -160,6 +168,13 @@ abstract class ThemeParamsJsImpl {
   external String? get button_color;
   external String? get button_text_color;
   external String? get secondary_bg_color;
+  external String? get header_bg_color;
+  external String? get accent_text_color;
+  external String? get section_bg_color;
+  external String? get section_header_text_color;
+  external String? get section_separator_color;
+  external String? get subtitle_text_color;
+  external String? get destructive_text_color;
 }
 
 @JS()
@@ -169,7 +184,11 @@ abstract class WebAppInitDataJsImpl {
     String? query_id,
     WebAppUserJsImpl? user,
     WebAppUserJsImpl? receiver,
+    WebAppChatJsImpl? chat,
+    String? chat_type,
+    String? chat_instance,
     String? start_param,
+    num? can_send_after,
     num auth_date,
     String hash,
   });
@@ -177,9 +196,31 @@ abstract class WebAppInitDataJsImpl {
   external String? get query_id;
   external WebAppUserJsImpl? get user;
   external WebAppUserJsImpl? get receiver;
+  external WebAppChatJsImpl? get chat;
+  external String? get chat_type;
+  external String? get chat_instance;
   external String? get start_param;
+  external num? get can_send_after;
   external num get auth_date;
   external String get hash;
+}
+
+@JS()
+@anonymous
+abstract class WebAppChatJsImpl {
+  external factory WebAppChatJsImpl({
+    num id,
+    String type,
+    String title,
+    String? username,
+    String photo_url,
+  });
+
+  external num get id;
+  external String get type;
+  external String get title;
+  external String? get username;
+  external String get photo_url;
 }
 
 @JS()
@@ -192,6 +233,8 @@ abstract class WebAppUserJsImpl {
     String? last_name,
     String? username,
     String? language_code,
+    bool? allows_write_to_pm,
+    bool? added_to_attachment_menu,
     String? photo_url,
   });
 
@@ -201,6 +244,8 @@ abstract class WebAppUserJsImpl {
   external String? get last_name;
   external String? get username;
   external String? get language_code;
+  external bool? get allows_write_to_pm;
+  external bool? get added_to_attachment_menu;
   external String? get photo_url;
   external bool? get is_premium;
 }

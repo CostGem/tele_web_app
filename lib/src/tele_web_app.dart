@@ -224,6 +224,12 @@ class TeleWebApp extends JsObjectWrapper<tele.WebAppJsImpl> {
   bool get isClosingConfirmationEnabled =>
       jsObject.isClosingConfirmationEnabled;
 
+  /// True, if vertical swipes to close or minimize the Mini App are enabled.
+  /// False, if vertical swipes to close or minimize the Mini App are disabled.
+  /// In any case, the user will still be able to minimize and close the Mini
+  /// App by swiping the Mini App's header.
+  bool get isVerticalSwipesEnabled => jsObject.isVerticalSwipesEnabled;
+
   /// A method that sets the app header color.
   ///
   /// Support in Bot API >= 6.1+
@@ -494,6 +500,63 @@ class ThemeParams extends JsObjectWrapper<tele.ThemeParamsJsImpl> {
   ///
   /// Support in Bot API >= 6.1+
   String? get secondaryBgColor => jsObject.secondary_bg_color;
+
+  /// Header background color in the #RRGGBB format.
+  /// Support in Bot API 7.0+
+  String? get headerBgColor => jsObject.header_bg_color;
+
+  /// Accent text color in the #RRGGBB format.
+  /// Support in Bot API 7.0+
+  String? get accentTextColor => jsObject.accent_text_color;
+
+  /// Background color for the section in the #RRGGBB format.
+  /// It is recommended to use this in conjunction with secondary_bg_color.
+  /// Support in Bot API 7.0+
+  String? get sectionBgColor => jsObject.section_bg_color;
+
+  /// Header text color for the section in the #RRGGBB format.
+  /// Support in Bot API 7.0+
+  String? get sectionHeaderTextColor => jsObject.section_header_text_color;
+
+  /// Section separator color in the #RRGGBB format.
+  /// Support in Bot API 7.6+
+  String? get sectionSeparatorColor => jsObject.section_separator_color;
+
+  /// Subtitle text color in the #RRGGBB format.
+  /// Support in Bot API 7.0+
+  String? get subtitleTextColor => jsObject.subtitle_text_color;
+
+  /// Text color for destructive actions in the #RRGGBB format.
+  /// Support in Bot API 7.0+
+  String? get destructiveTextColor => jsObject.destructive_text_color;
+}
+
+/// {@template webapp_chat}
+/// This object represents a chat.
+/// {@endtemplate}
+class WebAppChat extends JsObjectWrapper<tele.WebAppChatJsImpl?> {
+  /// {@macro webapp_chat}
+  WebAppChat.fromJsObject(super.jsObject);
+
+  /// Unique identifier for this chat.
+  /// This number may have more than 32 significant bits and some programming
+  /// languages may have difficulty/silent defects in interpreting it.
+  /// But it has at most 52 significant bits, so a signed 64-bit integer or
+  /// double-precision float type are safe for storing this identifier.
+  num get id => jsObject!.id.toInt();
+
+  /// Type of chat, can be either “group”, “supergroup” or “channel”
+  String get type => jsObject!.type;
+
+  /// Title of the chat
+  String get title => jsObject!.title;
+
+  /// Username of the chat
+  String? get username => jsObject!.username;
+
+  /// URL of the chat’s photo. The photo can be in .jpeg or .svg formats.
+  /// Only returned for Mini Apps launched from the attachment menu.
+  String get photoUrl => jsObject!.photo_url;
 }
 
 /// {@template webapp_init_data}
@@ -521,6 +584,21 @@ class WebAppInitData extends JsObjectWrapper<tele.WebAppInitDataJsImpl> {
   /// Returned only for Web Apps launched via the attachment menu.
   WebAppUser? get receiver => WebAppUser.fromJsObject(jsObject.receiver);
 
+  /// An object containing data about the chat where the bot was launched
+  /// via the attachment menu. Returned for supergroups, channels and group
+  /// chats – only for Mini Apps launched via the attachment menu.
+  WebAppChat? get chat => WebAppChat.fromJsObject(jsObject.chat);
+
+  /// Type of the chat from which the Mini App was opened.
+  /// Can be either “sender” for a private chat with the user opening the link,
+  /// “private”, “group”, “supergroup”, or “channel”.
+  /// Returned only for Mini Apps launched from direct links.
+  String? get chatType => jsObject.chat_type;
+
+  /// Global identifier, uniquely corresponding to the chat from which the Mini
+  /// App was opened. Returned only for Mini Apps launched from a direct link.
+  String? get chatInstance => jsObject.chat_instance;
+
   /// The value of the startattach parameter, passed
   /// [via link](https://core.telegram.org/bots/webapps#adding-bots-to-the-attachment-menu).
   ///
@@ -531,6 +609,10 @@ class WebAppInitData extends JsObjectWrapper<tele.WebAppInitDataJsImpl> {
   /// the GET-parameter tgWebAppStartParam, so the Web App can load
   /// the correct interface right away.
   String? get startParam => jsObject.start_param;
+
+  /// Time in seconds, after which a message can be sent
+  /// via the answerWebAppQuery method.
+  num? get canSendAfter => jsObject.can_send_after;
 
   /// Time when the form was opened.
   DateTime get authDate =>
@@ -574,6 +656,13 @@ class WebAppUser extends JsObjectWrapper<tele.WebAppUserJsImpl?> {
   ///
   /// Returns in user field only.
   String? get languageCode => jsObject?.language_code;
+
+  /// True, if this user allowed the bot to message them.
+  bool? get allowsWriteToPm => jsObject?.allows_write_to_pm ?? false;
+
+  /// True, if this user added the bot to the attachment menu.
+  bool? get addedToAttachmentMenu =>
+      jsObject?.added_to_attachment_menu ?? false;
 
   /// URL of the user’s profile photo.
   ///
